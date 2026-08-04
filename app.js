@@ -228,7 +228,7 @@ document.querySelectorAll('.nav-link').forEach(b => {
   };
 });
 
-// View Toggle Helper
+// View Toggle Helper preserving original interface layout
 function updateUI(session) {
   if (session) {
     if (authShell) authShell.classList.add('hidden');
@@ -242,7 +242,7 @@ function updateUI(session) {
   }
 }
 
-// Initialization and Auth Flow
+// Original Auth Interface Initialization
 async function start() {
   if (hasCloud) {
     const { data: { session } } = await supabase.auth.getSession();
@@ -259,7 +259,7 @@ async function start() {
   updateUI(user);
 }
 
-const authForm = $('#auth-form') || $('#login-form');
+const authForm = $('#auth-form');
 if (authForm) {
   authForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -284,7 +284,7 @@ if (signupButton) {
   };
 }
 
-const signoutButton = $('#signout-button') || $('#logout-btn');
+const signoutButton = $('#signout-button');
 if (signoutButton) {
   signoutButton.onclick = async () => {
     if (hasCloud) await supabase.auth.signOut();

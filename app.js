@@ -1,7 +1,10 @@
 const config = window.PLANNER_CONFIG || { supabaseUrl: '', supabaseAnonKey: '' };
 const hasCloud = Boolean(config.supabaseUrl && config.supabaseAnonKey);
 let supabase = null;
-if (hasCloud) ({ createClient } = await import('https://esm.sh/@supabase/supabase-js@2'), supabase = createClient(config.supabaseUrl, config.supabaseAnonKey));
+if (hasCloud) {
+  const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
+  supabase = createClient(config.supabaseUrl, config.supabaseAnonKey);
+};
 
 const $ = (selector) => document.querySelector(selector);
 const authShell = $('#auth-shell'), appShell = $('#app-shell'), dialog = $('#item-dialog');

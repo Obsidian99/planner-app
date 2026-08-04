@@ -11,16 +11,16 @@
 <body>
 <section class="auth-shell" id="auth-shell">
 <div class="auth-card">
-<div class="brand-mark">M</div>
+<div class="brand-mark" aria-hidden="true">M</div>
 <h1>Momentum</h1>
 <p>Calendar, tasks, and notes — connected.</p>
 <form id="auth-form">
 <label>Email<input id="email" type="email" autocomplete="email" placeholder="you@example.com" required /></label>
-<label>Password<input id="password" type="password" autocomplete="current-password" placeholder="At least 6 characters" required /></label>
-<button class="primary" type="submit">Sign in</button>
+<label>Password<input id="password" type="password" autocomplete="current-password" placeholder="At least 6 characters" minlength="6" required /></label>
+<button class="primary" type="submit" id="signin-button">Sign in</button>
 </form>
-<button class="text-button" id="signup-button">Create an account</button>
-<small id="auth-message">Demo mode is active. Add Supabase settings to enable secure sign-in and syncing.</small>
+<button class="text-button" id="signup-button" type="button">Create an account</button>
+<small id="auth-message" role="status" aria-live="polite">Demo mode is active. Add Supabase settings to enable secure sign-in and syncing.</small>
 </div>
 </section>
 <script type="module" src="auth.js"></script>

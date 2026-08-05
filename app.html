@@ -3,22 +3,41 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#4f46e5" />
+<meta name="theme-color" content="#131316" />
 <title>Momentum — Your day, in one place</title>
+<script>
+(function () {
+  var t = localStorage.getItem('momentum-theme');
+  if (t && t !== 'system') document.documentElement.setAttribute('data-theme', t);
+})();
+</script>
 <link rel="stylesheet" href="styles.css" />
 <script src="config.js" onerror="window.PLANNER_CONFIG={supabaseUrl:'',supabaseAnonKey:''}"></script>
 </head>
 <body>
+<header class="topbar">
+<button class="icon-button" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+<div class="topbar-brand"><span class="brand-mark small" aria-hidden="true">M</span> Momentum</div>
+<div class="topbar-spacer"></div>
+<select id="theme-select" aria-label="Theme" class="theme-select-top">
+<option value="system">System</option>
+<option value="light">Light</option>
+<option value="dark">Dark</option>
+</select>
+<span class="avatar" id="user-avatar" aria-hidden="true">D</span>
+</header>
 <main class="app-shell" id="app-shell">
 <aside class="sidebar">
-<div class="logo"><span class="brand-mark small" aria-hidden="true">M</span> Momentum</div>
 <nav>
-<button class="nav-link active" data-view="today" aria-label="Today">☀ Today</button>
-<button class="nav-link" data-view="calendar" aria-label="Calendar">▦ Calendar</button>
-<button class="nav-link" data-view="tasks" aria-label="Tasks">✓ Tasks</button>
-<button class="nav-link" data-view="notes" aria-label="Notes">▤ Notes</button>
+<button class="nav-link active" data-view="today" aria-label="Today"><span class="nav-badge badge-today" aria-hidden="true">☀</span> Today</button>
+<button class="nav-link" data-view="calendar" aria-label="Calendar"><span class="nav-badge badge-calendar" aria-hidden="true">▦</span> Calendar</button>
+<button class="nav-link" data-view="tasks" aria-label="Tasks"><span class="nav-badge badge-tasks" aria-hidden="true">✓</span> Tasks</button>
+<button class="nav-link" data-view="notes" aria-label="Notes"><span class="nav-badge badge-notes" aria-hidden="true">▤</span> Notes</button>
 </nav>
-<div class="sidebar-bottom"><span id="sync-status">Stored on this device</span><button class="text-button" id="signout-button">Sign out</button></div>
+<div class="sidebar-bottom">
+<span id="sync-status">Stored on this device</span>
+<button class="text-button" id="signout-button">Sign out</button>
+</div>
 </aside>
 <section class="content">
 <header>
@@ -32,11 +51,29 @@
 <dialog id="item-dialog"><form method="dialog" id="item-form">
 <div class="dialog-header"><h2 id="dialog-title">Add task</h2><button value="cancel" class="icon-button" aria-label="Close">×</button></div>
 <input id="item-id" type="hidden" />
+<input id="item-parent" type="hidden" />
 <label>Type<select id="item-type"><option value="task">Task</option><option value="event">Calendar event</option><option value="note">Note</option></select></label>
 <label>Title<input id="item-title" required placeholder="What needs your attention?" /></label>
-<label id="date-field">Date<input id="item-date" type="date" /></label>
+<label id="date-field"><span id="date-field-label">Date</span><input id="item-date" type="date" /></label>
 <label id="time-field">Time<input id="item-time" type="time" /></label>
-<label id="note-field">Details<textarea id="item-body" rows="5" placeholder="Add context, links, or ideas..."></textarea></label>
+<label id="note-field"><span id="note-field-label">Details</span><textarea id="item-body" rows="5" placeholder="Add context, links, or ideas..."></textarea></label>
+<p id="markdown-hint" class="field-hint" hidden>Markdown supported — **bold**, _italic_, `code`, lists, and links.</p>
+<label>Tags<input id="item-tags" placeholder="work, urgent, project-x (comma separated)" /></label>
+
+<div id="related-section" class="dialog-section" hidden>
+<h3>Related items</h3>
+<div id="related-list" class="related-list"></div>
+</div>
+
+<div id="subtasks-section" class="dialog-section" hidden>
+<h3>Subtasks</h3>
+<div id="subtask-list" class="item-list"></div>
+<div class="subtask-add">
+<input id="subtask-input" placeholder="Add a subtask and press Enter" />
+<button type="button" id="subtask-add-button" class="text-button">Add</button>
+</div>
+</div>
+
 <div class="dialog-actions">
 <button type="button" class="text-button danger" id="delete-button" hidden>Delete</button>
 <div class="dialog-actions-right">
